@@ -1,17 +1,20 @@
 ---
 name: robot-sim-expert
 description: |
-  Expert-level robot simulation engineering skill for Isaac Lab, Isaac Sim, and MuJoCo.
-  Use when working with:
+  Expert-level robot simulation engineering skill for Isaac Lab, Isaac Sim, MuJoCo,
+  MJX Lab, and Newton. Use when working with:
   - Isaac Lab/Sim robot simulation and RL training
   - MuJoCo physics simulation and model creation
+  - MJX Lab (MuJoCo+Isaac Lab API hybrid) for RL research
+  - Newton (GPU-accelerated physics with MuJoCo Warp)
   - Robot model design (URDF, MJCF, USD)
   - Reinforcement learning for robotics
   - Sim-to-real transfer
   - Multi-GPU parallel training
   
-  Triggers: robot simulation, Isaac Lab, Isaac Sim, MuJoCo, RL training, 
-  physics simulation, quadruped, humanoid, robotic arm, sim-to-real
+  Triggers: robot simulation, Isaac Lab, Isaac Sim, MuJoCo, MJX Lab, Newton,
+  RL training, physics simulation, quadruped, humanoid, robotic arm, sim-to-real,
+  MuJoCo Warp, GPU acceleration
 ---
 
 # Robot Simulation Expert
@@ -25,6 +28,8 @@ description: |
 | **Isaac Lab** | RL训练、任务配置、奖励设计、并行环境 |
 | **Isaac Sim** | USD场景、物理设置、传感器、ROS集成 |
 | **MuJoCo** | MJCF建模、Python绑定、Gym集成、批量仿真 |
+| **MJX Lab** | MuJoCo+Isaac Lab API混合，轻量级RL研究 |
+| **Newton** | GPU加速物理仿真，OpenUSD，可微分仿真 |
 | **通用** | 机器人动力学、控制算法、Sim-to-Real |
 
 ## 快速开始
@@ -51,6 +56,8 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 | [resources.md](references/resources.md) | 官方文档链接、GitHub仓库、学习路径 |
 | [isaaclab-workflow.md](references/isaaclab-workflow.md) | Isaac Lab 完整工作流指南 |
 | [mujoco-workflow.md](references/mujoco-workflow.md) | MuJoCo 完整工作流指南 |
+| [mjxlab-workflow.md](references/mjxlab-workflow.md) | MJX Lab 快速开始和训练指南 |
+| [newton-workflow.md](references/newton-workflow.md) | Newton GPU仿真和OpenUSD指南 |
 
 ## 框架选择指南
 
@@ -67,6 +74,20 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 - 需要完全开源方案
 - 进行控制算法研究
 - 预算有限的硬件环境
+
+### 选择 MJX Lab 当:
+- 熟悉 Isaac Lab API 但想用 MuJoCo 物理
+- 需要轻量级模块化抽象
+- 专注于 RL 研究和 sim-to-real
+- 想用 MuJoCo Warp 进行 GPU 加速
+- 需要运动模仿 (motion imitation) 功能
+
+### 选择 Newton 当:
+- 需要可微分物理仿真
+- 要使用 OpenUSD 工作流
+- 需要用户自定义扩展性
+- 偏好社区驱动的开源项目 (Linux Foundation)
+- 需要与 Warp 生态系统集成
 
 ## 典型工作流
 
@@ -87,6 +108,24 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 3. 创建 Gymnasium 环境
 4. 实现控制策略
 5. 训练和评估
+```
+
+### MJX Lab 训练流程
+```
+1. 安装 mjlab 和 mujoco-warp
+2. 选择预定义任务 (Mjlab-Velocity-Flat-Unitree-G1)
+3. 配置多GPU训练 (--gpu-ids 0 1)
+4. 运行训练 (uv run train)
+5. 从 WandB 评估策略 (uv run play)
+```
+
+### Newton 仿真流程
+```
+1. 设置 uv 环境 (uv sync --extra examples)
+2. 加载 URDF 或创建基本模型
+3. 配置 OpenUSD 场景 (可选)
+4. 运行仿真 (uv run -m newton.examples)
+5. 使用 Warp 进行可微分计算
 ```
 
 ## 常见任务模式

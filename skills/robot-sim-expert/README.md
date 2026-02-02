@@ -1,12 +1,14 @@
 # Robot Simulation Expert
 
-🤖 Expert-level skill for robot simulation with Isaac Lab, Isaac Sim, and MuJoCo.
+🤖 Expert-level skill for robot simulation with Isaac Lab, Isaac Sim, MuJoCo, MJX Lab, and Newton.
 
 ## Overview
 
 This skill provides comprehensive expertise for:
 - **Isaac Lab/Sim**: NVIDIA's high-fidelity robotics simulation platform
 - **MuJoCo**: DeepMind's physics engine for robotics
+- **MJX Lab**: Isaac Lab API + MuJoCo Warp for lightweight RL research
+- **Newton**: GPU-accelerated differentiable physics with OpenUSD
 - **RL Training**: Reinforcement learning for robot control
 - **Model Creation**: URDF, MJCF, and USD robot models
 
@@ -27,15 +29,35 @@ python scripts/create_isaaclab_task.py --name MyQuadruped --robot anymal_d
 python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 ```
 
+### MJX Lab Quick Start
+```bash
+# Install and run demo
+uvx --from mjlab demo
+
+# Train velocity tracking
+uv run train Mjlab-Velocity-Flat-Unitree-G1 --env.scene.num-envs 4096
+```
+
+### Newton Quick Start
+```bash
+# Setup environment
+uv sync --extra examples
+
+# Run basic example
+uv run -m newton.examples basic_pendulum
+```
+
 ## Framework Comparison
 
-| Feature | Isaac Lab/Sim | MuJoCo |
-|---------|---------------|--------|
-| GPU Acceleration | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Rendering Quality | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Open Source | Partial | Full |
-| Learning Curve | Steep | Gentle |
-| RL Framework | Built-in | External |
+| Feature | Isaac Lab | MuJoCo | MJX Lab | Newton |
+|---------|-----------|--------|---------|--------|
+| GPU Acceleration | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Rendering | ⭐⭐⭐⭐⭐ (Ray-traced) | ⭐⭐⭐ (Basic) | ⭐⭐⭐ | ⭐⭐⭐ |
+| Differentiability | ❌ | ✅ (MJX) | ✅ | ✅ |
+| RL Framework | Built-in (RSL RL) | External | Built-in | External |
+| OpenUSD | ✅ | ❌ | ❌ | ✅ |
+| Open Source | Partial | Full | Full | Full (Apache 2.0) |
+| Learning Curve | Steep | Gentle | Moderate | Moderate |
 
 ## Capabilities
 
@@ -59,6 +81,20 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 - Inverse kinematics
 - Custom controllers
 
+### MJX Lab Expertise
+- Isaac Lab API with MuJoCo physics
+- Motion imitation learning
+- Multi-GPU distributed training
+- WandB integration for motion datasets
+- Sim-to-real deployment
+
+### Newton Expertise
+- GPU-accelerated physics with Warp
+- Differentiable simulation
+- OpenUSD scene composition
+- Custom force kernels
+- System identification
+
 ## Directory Structure
 
 ```
@@ -72,15 +108,36 @@ robot-sim-expert/
 └── references/
     ├── resources.md              # Links and documentation
     ├── isaaclab-workflow.md      # Isaac Lab guide
-    └── mujoco-workflow.md        # MuJoCo guide
+    ├── mujoco-workflow.md        # MuJoCo guide
+    ├── mjxlab-workflow.md        # MJX Lab guide (NEW)
+    └── newton-workflow.md        # Newton guide (NEW)
 ```
 
 ## References
 
-- [Isaac Lab GitHub](https://github.com/isaac-sim/IsaacLab)
-- [Isaac Lab Docs](https://isaac-sim.github.io/IsaacLab/)
-- [MuJoCo Docs](https://mujoco.readthedocs.io/)
-- [MuJoCo GitHub](https://github.com/google-deepmind/mujoco)
+### Isaac Lab
+- [GitHub](https://github.com/isaac-sim/IsaacLab)
+- [Docs](https://isaac-sim.github.io/IsaacLab/)
+
+### MuJoCo
+- [GitHub](https://github.com/google-deepmind/mujoco)
+- [Docs](https://mujoco.readthedocs.io/)
+
+### MJX Lab
+- [GitHub](https://github.com/mujocolab/mjlab)
+- [Docs](https://mujocolab.github.io/mjlab/)
+
+### Newton
+- [GitHub](https://github.com/newton-physics/newton)
+- [Docs](https://newton-physics.github.io/newton/)
+
+## Acknowledgments
+
+This skill incorporates knowledge from:
+- **MuJoCo Community Lab** - For MJX Lab, combining Isaac Lab API with MuJoCo Warp
+- **Newton Project** - A Linux Foundation initiative by Disney Research, Google DeepMind, and NVIDIA
+- **NVIDIA** - For Isaac Lab/Sim and Warp
+- **Google DeepMind** - For MuJoCo and MuJoCo Warp
 
 ## License
 
