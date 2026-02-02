@@ -108,4 +108,3 @@ Instructions and guidance...
 ## 🙏 Acknowledgments
 
 - Inspired by [Anthropic Skills](https://github.com/anthropics/skills)
-- Built for [Galbot](https://galbot.com) and robot development
