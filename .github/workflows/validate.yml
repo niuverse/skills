@@ -1,0 +1,83 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'skills/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'skills/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install pyyaml
+
+    - name: Validate skill structure
+      run: |
+        python scripts/validate_skills.py
+
+    - name: Check SKILL.md files
+      run: |
+        find skills -name "SKILL.md" | wc -l
+        echo "SKILL.md files found"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check file structure
+      run: |
+        echo "Checking skills directory structure..."
+        for skill in skills/*/; do
+          if [ -d "$skill" ]; then
+            skill_name=$(basename "$skill")
+            echo "Checking $skill_name..."
+            
+            # Check for SKILL.md
+            if [ ! -f "$skill/SKILL.md" ]; then
+              echo "❌ $skill_name missing SKILL.md"
+              exit 1
+            fi
+            
+            # Check for valid YAML frontmatter
+            if ! grep -q "^---$" "$skill/SKILL.md"; then
+              echo "❌ $skill_name SKILL.md missing YAML frontmatter"
+              exit 1
+            fi
+            
+            echo "✅ $skill_name structure valid"
+          fi
+        done
+
+  test-scripts:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Test Python scripts syntax
+      run: |
+        find skills -name "*.py" -type f | while read script; do
+          echo "Checking syntax: $script"
+          python -m py_compile "$script" || exit 1
+        done
+        echo "✅ All Python scripts have valid syntax"
