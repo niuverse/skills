@@ -1,6 +1,7 @@
 # Niuverse Skills
 
 [![Validate Skills](https://github.com/niuverse/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/niuverse/skills/actions)
+[![Update Catalog](https://github.com/niuverse/skills/actions/workflows/update-catalog.yml/badge.svg)](https://github.com/niuverse/skills/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A curated collection of AI agent skills for robot simulation, development, and automation tasks.
@@ -13,7 +14,9 @@ Niuverse Skills is a modular skill library designed for AI agents (Claude, OpenC
 
 | Skill | Description | Category |
 |-------|-------------|----------|
-| [`robot-sim-expert`](./skills/robot-sim-expert/) | Expert-level robot simulation for Isaac Lab, Isaac Sim, and MuJoCo | 🤖 Robotics |
+| [`code-simplifier`](./skills/code-simplifier/) | AI-powered code simplifier and cleanup expert. Transforms messy, over-engineered... | ✨ Code Quality |
+| [`python-architect`](./skills/python-architect/) | Expert Python software architect for modern, production-grade Python development... | 🐍 Python |
+| [`robot-sim-expert`](./skills/robot-sim-expert/) | Expert-level robot simulation engineering skill for Isaac Lab, Isaac Sim... | 🤖 Robotics |
 
 ## 🚀 Quick Start
 
