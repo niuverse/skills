@@ -1,13 +1,13 @@
 # Robot Simulation Expert
 
-🤖 Expert-level skill for robot simulation with Isaac Lab, Isaac Sim, MuJoCo, MJX Lab, and Newton.
+🤖 Expert-level skill for robot simulation with Isaac Lab, Isaac Sim, MuJoCo, mjlab, and Newton.
 
 ## Overview
 
 This skill provides comprehensive expertise for:
 - **Isaac Lab/Sim**: NVIDIA's high-fidelity robotics simulation platform
 - **MuJoCo**: DeepMind's physics engine for robotics
-- **MJX Lab**: Isaac Lab API + MuJoCo Warp for lightweight RL research
+- **mjlab**: Isaac Lab API + MuJoCo Warp for lightweight RL research
 - **Newton**: GPU-accelerated differentiable physics with OpenUSD
 - **RL Training**: Reinforcement learning for robot control
 - **Model Creation**: URDF, MJCF, and USD robot models
@@ -29,7 +29,7 @@ python scripts/create_isaaclab_task.py --name MyQuadruped --robot anymal_d
 python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 ```
 
-### MJX Lab Quick Start
+### mjlab Quick Start
 ```bash
 # Install and run demo
 uvx --from mjlab demo
@@ -49,7 +49,7 @@ uv run -m newton.examples basic_pendulum
 
 ## Framework Comparison
 
-| Feature | Isaac Lab | MuJoCo | MJX Lab | Newton |
+| Feature | Isaac Lab | MuJoCo | mjlab | Newton |
 |---------|-----------|--------|---------|--------|
 | GPU Acceleration | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Rendering | ⭐⭐⭐⭐⭐ (Ray-traced) | ⭐⭐⭐ (Basic) | ⭐⭐⭐ | ⭐⭐⭐ |
@@ -81,7 +81,7 @@ uv run -m newton.examples basic_pendulum
 - Inverse kinematics
 - Custom controllers
 
-### MJX Lab Expertise
+### mjlab Expertise
 - Isaac Lab API with MuJoCo physics
 - Motion imitation learning
 - Multi-GPU distributed training
@@ -109,7 +109,7 @@ robot-sim-expert/
     ├── resources.md              # Links and documentation
     ├── isaaclab-workflow.md      # Isaac Lab guide
     ├── mujoco-workflow.md        # MuJoCo guide
-    ├── mjxlab-workflow.md        # MJX Lab guide (NEW)
+    ├── mjlab-workflow.md        # mjlab guide (NEW)
     └── newton-workflow.md        # Newton guide (NEW)
 ```
 
@@ -123,7 +123,7 @@ robot-sim-expert/
 - [GitHub](https://github.com/google-deepmind/mujoco)
 - [Docs](https://mujoco.readthedocs.io/)
 
-### MJX Lab
+### mjlab
 - [GitHub](https://github.com/mujocolab/mjlab)
 - [Docs](https://mujocolab.github.io/mjlab/)
 
@@ -134,7 +134,7 @@ robot-sim-expert/
 ## Acknowledgments
 
 This skill incorporates knowledge from:
-- **MuJoCo Community Lab** - For MJX Lab, combining Isaac Lab API with MuJoCo Warp
+- **MuJoCo Community Lab** - For mjlab, combining Isaac Lab API with MuJoCo Warp
 - **Newton Project** - A Linux Foundation initiative by Disney Research, Google DeepMind, and NVIDIA
 - **NVIDIA** - For Isaac Lab/Sim and Warp
 - **Google DeepMind** - For MuJoCo and MuJoCo Warp

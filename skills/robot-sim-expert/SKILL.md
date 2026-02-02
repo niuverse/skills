@@ -2,17 +2,17 @@
 name: robot-sim-expert
 description: |
   Expert-level robot simulation engineering skill for Isaac Lab, Isaac Sim, MuJoCo,
-  MJX Lab, and Newton. Use when working with:
+  mjlab, and Newton. Use when working with:
   - Isaac Lab/Sim robot simulation and RL training
   - MuJoCo physics simulation and model creation
-  - MJX Lab (MuJoCo+Isaac Lab API hybrid) for RL research
+  - mjlab (MuJoCo+Isaac Lab API hybrid) for RL research
   - Newton (GPU-accelerated physics with MuJoCo Warp)
   - Robot model design (URDF, MJCF, USD)
   - Reinforcement learning for robotics
   - Sim-to-real transfer
   - Multi-GPU parallel training
   
-  Triggers: robot simulation, Isaac Lab, Isaac Sim, MuJoCo, MJX Lab, Newton,
+  Triggers: robot simulation, Isaac Lab, Isaac Sim, MuJoCo, mjlab, Newton,
   RL training, physics simulation, quadruped, humanoid, robotic arm, sim-to-real,
   MuJoCo Warp, GPU acceleration
 ---
@@ -28,7 +28,7 @@ description: |
 | **Isaac Lab** | RL训练、任务配置、奖励设计、并行环境 |
 | **Isaac Sim** | USD场景、物理设置、传感器、ROS集成 |
 | **MuJoCo** | MJCF建模、Python绑定、Gym集成、批量仿真 |
-| **MJX Lab** | MuJoCo+Isaac Lab API混合，轻量级RL研究 |
+| **mjlab** | MuJoCo+Isaac Lab API混合，轻量级RL研究 |
 | **Newton** | GPU加速物理仿真，OpenUSD，可微分仿真 |
 | **通用** | 机器人动力学、控制算法、Sim-to-Real |
 
@@ -56,7 +56,7 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 | [resources.md](references/resources.md) | 官方文档链接、GitHub仓库、学习路径 |
 | [isaaclab-workflow.md](references/isaaclab-workflow.md) | Isaac Lab 完整工作流指南 |
 | [mujoco-workflow.md](references/mujoco-workflow.md) | MuJoCo 完整工作流指南 |
-| [mjxlab-workflow.md](references/mjxlab-workflow.md) | MJX Lab 快速开始和训练指南 |
+| [mjlab-workflow.md](references/mjlab-workflow.md) | mjlab 快速开始和训练指南 |
 | [newton-workflow.md](references/newton-workflow.md) | Newton GPU仿真和OpenUSD指南 |
 
 ## 框架选择指南
@@ -75,7 +75,7 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 - 进行控制算法研究
 - 预算有限的硬件环境
 
-### 选择 MJX Lab 当:
+### 选择 mjlab 当:
 - 熟悉 Isaac Lab API 但想用 MuJoCo 物理
 - 需要轻量级模块化抽象
 - 专注于 RL 研究和 sim-to-real
@@ -110,7 +110,7 @@ python scripts/create_mujoco_robot.py --name my_robot --type quadruped
 5. 训练和评估
 ```
 
-### MJX Lab 训练流程
+### mjlab 训练流程
 ```
 1. 安装 mjlab 和 mujoco-warp
 2. 选择预定义任务 (Mjlab-Velocity-Flat-Unitree-G1)

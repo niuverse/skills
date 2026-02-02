@@ -1,10 +1,10 @@
-# MJX Lab Workflow Guide
+# mjlab Workflow Guide
 
-MJX Lab combines Isaac Lab's proven API with MuJoCo-Warp physics for lightweight, modular RL robotics research.
+mjlab combines Isaac Lab's proven API with MuJoCo-Warp physics for lightweight, modular RL robotics research.
 
 ## Overview
 
-**MJX Lab** bridges the gap between Isaac Lab's excellent API design and MuJoCo's superior physics engine:
+**mjlab** bridges the gap between Isaac Lab's excellent API design and MuJoCo's superior physics engine:
 - Uses **Isaac Lab API** for environment and task configuration
 - Powered by **MuJoCo Warp** for GPU-accelerated physics
 - Lightweight and modular for rapid experimentation
@@ -213,4 +213,4 @@ uv run train Mjlab-Velocity-Flat-Unitree-G1 \
 
 ## Acknowledgments
 
-MJX Lab is developed by the MuJoCo Community Lab, combining the best of Isaac Lab's API design with MuJoCo's physics excellence.
+mjlab is developed by the MuJoCo Community Lab, combining the best of Isaac Lab's API design with MuJoCo's physics excellence.

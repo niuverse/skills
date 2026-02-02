@@ -1,6 +1,6 @@
 # Robot Simulation Resources
 
-Complete reference for Isaac Lab, Isaac Sim, MuJoCo, MJX Lab, and Newton.
+Complete reference for Isaac Lab, Isaac Sim, MuJoCo, mjlab, and Newton.
 
 ---
 
@@ -121,7 +121,7 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
 
 ---
 
-## MJX Lab
+## mjlab
 
 ### 官方资源
 - **GitHub**: https://github.com/mujocolab/mjlab
@@ -185,7 +185,7 @@ wp.backward(loss)
 
 ## 对比总结
 
-| 特性 | Isaac Sim/Lab | MuJoCo | MJX Lab | Newton |
+| 特性 | Isaac Sim/Lab | MuJoCo | mjlab | Newton |
 |------|---------------|--------|---------|--------|
 | 渲染质量 | ⭐⭐⭐⭐⭐ (光线追踪) | ⭐⭐⭐ (基础) | ⭐⭐⭐ | ⭐⭐⭐ |
 | 物理精度 | ⭐⭐⭐⭐⭐ (PhysX 5) | ⭐⭐⭐⭐⭐ (广义坐标) | ⭐⭐⭐⭐⭐ (MuJoCo) | ⭐⭐⭐⭐⭐ (MuJoCo) |
@@ -205,7 +205,7 @@ wp.backward(loss)
 - 有高保真渲染需求
 - 使用 NVIDIA Omniverse 生态
 
-### 选择 MJX Lab 当:
+### 选择 mjlab 当:
 - 熟悉 Isaac Lab API 但想用 MuJoCo 物理
 - 需要轻量级、快速迭代的 RL 研究
 - 专注 sim-to-real 部署
@@ -226,14 +226,14 @@ wp.backward(loss)
 
 ### 初学者
 1. **MuJoCo** - 理解基础物理仿真
-2. **MJX Lab** - 快速开始 GPU 加速 RL
+2. **mjlab** - 快速开始 GPU 加速 RL
 3. **Isaac Sim** - 学习 USD 和高级可视化
 4. **Isaac Lab** - 完整 RL 训练工作流
 5. **Newton** - 可微分仿真 (进阶)
 
 ### 进阶
 - 自定义机器人模型
-- 多GPU并行训练 (MJX Lab/Isaac Lab)
+- 多GPU并行训练 (mjlab/Isaac Lab)
 - 域随机化 (Domain Randomization)
 - Sim-to-Real 迁移
 - 可微分控制优化 (Newton)
@@ -250,7 +250,7 @@ wp.backward(loss)
 - **GitHub Discussions**: https://github.com/google-deepmind/mujoco/discussions
 - **Awesome MuJoCo**: https://github.com/erwincoumans/awesome-mujoco
 
-### MJX Lab
+### mjlab
 - **GitHub Issues**: https://github.com/mujocolab/mjlab/issues
 - **文档反馈**: https://mujocolab.github.io/mjlab/source/faq.html
 
