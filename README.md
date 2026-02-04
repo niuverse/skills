@@ -14,12 +14,12 @@ Niuverse Skills is a modular skill library designed for AI agents (Claude, OpenC
 
 | Skill | Description | Category |
 |-------|-------------|----------|
-| [`code-simplifier`](./skills/code-simplifier/) | Simplify complex code. Remove over-engineering and duplication. | 🧹 Code Quality |
-| [`code-style-imitator`](./skills/code-style-imitator/) | Extract and learn coding patterns from existing codebases. | 🎨 Code Style |
-| [`code-style-unifier`](./skills/code-style-unifier/) | Format code to Google Style. Multi-language support. | 🎨 Code Style |
-| [`robot-sim-expert`](./skills/robot-sim-expert/) | Robot simulation for Isaac Lab/Sim, MuJoCo, mjlab, Newton. | 🤖 Robotics |
-| [`python-architect`](./skills/python-architect/) | Modern Python projects with uv, ruff, pytest, clean architecture. | 🐍 Python |
-| [`mkdocs-creator`](./skills/mkdocs-creator/) | Create documentation sites with MkDocs and Material theme. | 🛠️ Tools |
+| [`code-simplifier`](./skills/code-simplifier/) | AI-powered code simplifier and cleanup expert. Transforms... | 🤖 Robotics |
+| [`robot-sim-expert`](./skills/robot-sim-expert/) | Expert-level robot simulation engineering skill for Isaac... | 🤖 Robotics |
+| [`python-architect`](./skills/python-architect/) | Expert Python software architect for modern, production-g... | 🐍 Python |
+| [`mkdocs-creator`](./skills/mkdocs-creator/) | Expert documentation site creator using MkDocs and Materi... | 🛠️ Tools |
+| [`code-style-imitator`](./skills/code-style-imitator/) | AI-powered code style analyzer and imitator. Extracts cod... | ✨ Code Quality |
+| [`code-style-unifier`](./skills/code-style-unifier/) | Universal code style formatter and unifier. Transforms co... | ✨ Code Quality |
 
 ## 🚀 Quick Start
 
