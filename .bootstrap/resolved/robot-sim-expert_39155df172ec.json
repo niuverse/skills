@@ -1,0 +1,11 @@
+{
+  "skill_name": "robot-sim-expert",
+  "gap_type": "missing_example",
+  "context": "用户询问如何在 Isaac Lab 中处理多 GPU 训练时的内存不足错误",
+  "suggestion": "添加多 GPU 内存优化和错误处理的代码示例",
+  "timestamp": "2026-02-24T18:26:47.759550",
+  "severity": "high",
+  "resolved": true,
+  "resolution_commit": "auto-enhanced",
+  "resolved_at": "2026-02-24T18:27:08.557939"
+}

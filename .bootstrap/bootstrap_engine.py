@@ -330,28 +330,44 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Skill Bootstrap Engine")
     parser.add_argument("--skills-root", default=".", help="Skills repository root")
-    parser.add_argument("record-gap", dest="action", action="store_const", const="record")
-    parser.add_argument("list-gaps", dest="action", action="store_const", const="list")
-    parser.add_argument("analyze", dest="action", action="store_const", const="analyze")
-    parser.add_argument("enhance", dest="action", action="store_const", const="enhance")
-    parser.add_argument("report", dest="action", action="store_const", const="report")
-    parser.add_argument("--skill", help="Skill name")
-    parser.add_argument("--type", help="Gap type")
-    parser.add_argument("--context", help="Usage context")
-    parser.add_argument("--suggestion", help="Suggestion content")
-    parser.add_argument("--severity", default="medium", help="Gap severity")
+    subparsers = parser.add_subparsers(dest="action", required=True)
+    
+    # record-gap subcommand
+    record_parser = subparsers.add_parser("record-gap", help="Record a new skill gap")
+    record_parser.add_argument("--skill", required=True, help="Skill name")
+    record_parser.add_argument("--type", required=True, help="Gap type")
+    record_parser.add_argument("--context", required=True, help="Usage context")
+    record_parser.add_argument("--suggestion", required=True, help="Suggestion content")
+    record_parser.add_argument("--severity", default="medium", help="Gap severity")
+    
+    # list-gaps subcommand
+    list_parser = subparsers.add_parser("list-gaps", help="List pending gaps")
+    list_parser.add_argument("--skill", help="Skill name filter")
+    
+    # analyze subcommand
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze skill coverage")
+    analyze_parser.add_argument("--skill", required=True, help="Skill name")
+    analyze_parser.add_argument("--context", help="Usage context")
+    
+    # enhance subcommand
+    enhance_parser = subparsers.add_parser("enhance", help="Auto-enhance skill")
+    enhance_parser.add_argument("--skill", required=True, help="Skill name")
+    
+    # report subcommand
+    report_parser = subparsers.add_parser("report", help="Generate skill report")
+    report_parser.add_argument("--skill", help="Skill name filter")
     
     args = parser.parse_args()
     
     engine = SkillBootstrapEngine(args.skills_root)
     
-    if args.action == "record":
+    if args.action == "record-gap":
         gap_id = engine.record_gap(
             args.skill, args.type, args.context, args.suggestion, args.severity
         )
         print(f"Recorded gap: {gap_id}")
     
-    elif args.action == "list":
+    elif args.action == "list-gaps":
         gaps = engine.list_pending_gaps(args.skill)
         for gap in gaps:
             print(f"[{gap['severity']}] {gap['skill_name']}: {gap['gap_type']}")
