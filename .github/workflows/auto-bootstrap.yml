@@ -1,0 +1,96 @@
+name: Auto Bootstrap CI
+
+on:
+  schedule:
+    # 每天凌晨 2 点运行
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      skill:
+        description: 'Specific skill to enhance (leave empty for all)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (preview only)'
+        type: boolean
+        default: true
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install pyyaml
+    
+    - name: Run auto-enhancer
+      id: enhance
+      run: |
+        if [ "${{ github.event.inputs.skill }}" != "" ]; then
+          python .bootstrap/auto_enhancer.py --skills-root . --skill "${{ github.event.inputs.skill }}" ${{ github.event.inputs.dry_run == 'false' && '' || '--dry-run' }}
+        else
+          python .bootstrap/auto_enhancer.py --skills-root . --all ${{ github.event.inputs.dry_run == 'false' && '' || '--dry-run' }}
+        fi
+      continue-on-error: true
+    
+    - name: Generate report
+      id: report
+      run: |
+        python .bootstrap/bootstrap_engine.py --skills-root . report > bootstrap-report.json
+        echo "report<<EOF" >> $GITHUB_OUTPUT
+        cat bootstrap-report.json >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    
+    - name: Check for changes
+      id: changes
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Create Pull Request
+      if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "chore: auto-bootstrap skill updates"
+        title: "🤖 Auto-bootstrap: Skill enhancements"
+        body: |
+          ## 自动生成的 Skill 更新
+          
+          此 PR 由 bootstrap 机制自动生成，基于实际使用反馈完善 skill 内容。
+          
+          ### 变更摘要
+          - 补充缺失的示例
+          - 澄清模糊描述
+          - 添加边界情况处理
+          
+          ### 报告
+          ```json
+          ${{ steps.report.outputs.report }}
+          ```
+          
+          > 由 `.bootstrap/auto_enhancer.py` 自动生成
+        branch: auto-bootstrap-updates
+        delete-branch: true
+    
+    - name: Comment on no changes
+      if: steps.changes.outputs.has_changes == 'false'
+      run: |
+        echo "No changes to apply. All skills are up to date!"
