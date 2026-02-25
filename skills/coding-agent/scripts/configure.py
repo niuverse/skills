@@ -35,7 +35,7 @@ DEFAULT_CONFIG = {
         },
         "gemini": {
             "type": "google",
-            "model": "gemini-2.5-pro",
+            "model": "gemini-3.1-pro",
             "api_key": "${GEMINI_API_KEY}",
             "max_tokens": 4000,
             "temperature": 0.2
