@@ -2,14 +2,14 @@
 name: coding-agent
 description: |
   Multi-model coding agent orchestration skill. Enables coordination between different
-  AI coding agents like Kimi, Codex, Claude Code, Gemini, OpenCode, etc.
+  AI coding agents like Kimi, Codex, Claude Code, Gemini, MiniMax, GLM, etc.
   
   Use cases:
   - Multi-agent parallel coding with task distribution
   - Agent selection based on task characteristics
   - Cross-model code review and validation
   
-  Triggers: coding agent, multi-agent, codex, claude code, gemini, opencode,
+  Triggers: coding agent, multi-agent, codex, claude code, gemini, minimax, glm,
   agent orchestration, parallel coding, distributed development, ai coding team
 ---
 
@@ -30,14 +30,22 @@ description: |
 
 ## 🚀 支持的 AI 代理
 
-| 代理 | 类型 | 最佳场景 |
-|------|------|----------|
-| **Kimi** | 大模型 | 架构设计、复杂推理 |
-| **Codex** | 代码专用 | 快速编码、API 实现 |
-| **Claude Code** | 代码专用 | 深度重构、调试 |
-| **Gemini** | 大模型 | 多模态、长上下文 |
-| **OpenCode** | 开源替代 | 本地部署、隐私敏感 |
-| **GPT-4** | 大模型 | 通用任务 |
+### 国际模型
+
+| 代理 | 类型 | 最佳场景 | 最新模型 |
+|------|------|----------|----------|
+| **Codex** | 代码专用 | 快速编码、API 实现 | `gpt-5.3-codex` |
+| **Claude** | 代码专用 | 深度重构、调试 | `claude-opus-4.6` |
+| **Gemini** | 大模型 | 多模态、长上下文 | `gemini-2.5-pro` |
+
+### 国产模型
+
+| 代理 | 类型 | 最佳场景 | 最新模型 |
+|------|------|----------|----------|
+| **Kimi** | 大模型 | 架构设计、Agent 集群 | `kimi-k2.5` |
+| **MiniMax** | 代码专用 | 高性价比、架构师级编程 | `minimax-m2.5` |
+| **GLM** | 大模型 | 编程与智能体能力 | `glm-5` |
+| **OpenCode** | 开源替代 | 本地部署、隐私敏感 | 本地模型 |
 
 ## 📖 使用模式
 
@@ -79,9 +87,12 @@ python scripts/verify_env.py
 python scripts/configure.py --init
 
 # 设置环境变量
-export CODEX_API_KEY="your-key"
-export ANTHROPIC_API_KEY="your-key"
-export GEMINI_API_KEY="your-key"
+export OPENAI_API_KEY="your-key"      # For Codex
+export ANTHROPIC_API_KEY="your-key"   # For Claude
+export GEMINI_API_KEY="your-key"      # For Gemini
+export KIMI_API_KEY="your-key"        # For Kimi (Moonshot)
+export MINIMAX_API_KEY="your-key"     # For MiniMax
+export GLM_API_KEY="your-key"         # For GLM (Zhipu)
 ```
 
 ### 3. 运行任务
@@ -104,7 +115,7 @@ from scripts.orchestrate import AgentCaller, AgentConfig
 config = AgentConfig(
     name="codex",
     type="openai",
-    model="5.3-codex",
+    model="gpt-5.3-codex",
     api_key="your-key"
 )
 
@@ -153,63 +164,101 @@ print(f"选择代理: {agent}")
 
 ```yaml
 agents:
+  # OpenAI / Codex
   codex:
     type: openai
-    model: 5.3-codex
-    api_key: ${CODEX_API_KEY}
+    model: gpt-5.3-codex
+    api_key: ${OPENAI_API_KEY}
     max_tokens: 4000
     temperature: 0.2
     
+  # Anthropic / Claude
   claude-opus:
     type: anthropic
     model: claude-opus-4.6
     api_key: ${ANTHROPIC_API_KEY}
     max_tokens: 8000
+    temperature: 0.2
     
   claude-sonnet:
     type: anthropic
     model: claude-sonnet-4.6
     api_key: ${ANTHROPIC_API_KEY}
     max_tokens: 8000
+    temperature: 0.2
     
+  # Google / Gemini
   gemini:
     type: google
     model: gemini-2.5-pro
     api_key: ${GEMINI_API_KEY}
     max_tokens: 4000
+    temperature: 0.2
     
-  gpt4:
-    type: openai
-    model: gpt-4.5
-    api_key: ${OPENAI_API_KEY}
+  # Moonshot / Kimi
+  kimi:
+    type: openai  # OpenAI compatible API
+    model: kimi-k2.5
+    api_key: ${KIMI_API_KEY}
+    endpoint: https://api.moonshot.cn/v1
     max_tokens: 4000
+    temperature: 0.2
+    
+  # MiniMax
+  minimax:
+    type: openai  # OpenAI compatible API
+    model: minimax-m2.5
+    api_key: ${MINIMAX_API_KEY}
+    endpoint: https://api.minimaxi.com/v1
+    max_tokens: 4000
+    temperature: 0.2
+    
+  # Zhipu / GLM
+  glm:
+    type: openai  # OpenAI compatible API
+    model: glm-5
+    api_key: ${GLM_API_KEY}
+    endpoint: https://open.bigmodel.cn/api/paas/v4
+    max_tokens: 4000
+    temperature: 0.2
+    
+  # Local / OpenCode
+  opencode:
+    type: local
+    model: opencode-7b
+    endpoint: http://localhost:8080/v1/completions
+    max_tokens: 4000
+    temperature: 0.2
 
 strategies:
   fast_coding:
     primary: codex
-    fallback: gemini
+    fallback: minimax
     
   deep_refactor:
     primary: claude-opus
     review_by: codex
     
   parallel_implementation:
-    agents: [codex, claude-sonnet, gemini]
+    agents: [codex, claude-sonnet, minimax]
     selection: best_of_three
+    
+  code_review:
+    agents: [claude-opus, codex]
+    mode: consensus
 ```
 
 ## 📊 代理能力矩阵
 
-| 任务类型 | Kimi | Codex | Claude Opus | Gemini | OpenCode |
-|----------|------|-------|-------------|--------|----------|
-| 架构设计 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| 快速编码 | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
-| 代码重构 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
-| 调试排错 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
-| 测试生成 | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
-| 文档编写 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| 长上下文 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| API 设计 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
+| 任务类型 | Kimi K2.5 | Codex 5.3 | Claude Opus 4.6 | MiniMax M2.5 | GLM-5 |
+|----------|-----------|-----------|-----------------|--------------|-------|
+| 架构设计 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| 快速编码 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| 代码重构 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| 调试排错 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Agent 集群 | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| 长上下文 | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| 性价比 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 
 ## 🚨 故障排除
 
@@ -218,12 +267,21 @@ strategies:
 | 代理超时 | 增加 timeout 配置，或启用 fallback |
 | 结果不一致 | 使用 review 模式让多个代理投票 |
 | 上下文过长 | 使用 Gemini 或启用上下文压缩 |
-| API 限制 | 启用本地缓存，或使用 OpenCode |
+| API 限制 | 启用本地缓存，或使用国产模型 |
+| 国内访问慢 | 使用 Kimi、MiniMax、GLM 等国产模型 |
 
 ## 📚 参考资料
 
 - [resources.md](references/resources.md) - 各代理 API 文档和最新模型信息
 - [templates/](templates/) - 示例配置和脚本
+
+### 模型发布信息
+
+- **GPT-5.3-Codex**: https://openai.com/index/introducing-gpt-5-3-codex/
+- **Claude 4.6**: https://docs.anthropic.com/
+- **Kimi K2.5**: https://www.kimi.com/blog/kimi-k2-5.html
+- **MiniMax M2.5**: https://minimaxi.com/news/minimax-m25
+- **GLM-5**: https://z.ai/blog/glm-5
 
 ---
 

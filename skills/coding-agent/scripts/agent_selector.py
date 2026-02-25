@@ -48,6 +48,16 @@ AGENT_CAPABILITIES = {
         debugging=4, test_generation=4, documentation=5,
         long_context=5, api_design=4
     ),
+    "minimax": AgentCapability(
+        architecture_design=4, fast_coding=5, code_refactor=4,
+        debugging=4, test_generation=4, documentation=4,
+        long_context=3, api_design=5
+    ),
+    "glm": AgentCapability(
+        architecture_design=4, fast_coding=4, code_refactor=4,
+        debugging=4, test_generation=4, documentation=4,
+        long_context=4, api_design=4
+    ),
     "opencode": AgentCapability(
         architecture_design=3, fast_coding=3, code_refactor=3,
         debugging=3, test_generation=3, documentation=3,

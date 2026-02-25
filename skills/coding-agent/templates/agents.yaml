@@ -1,11 +1,13 @@
 agents:
+  # OpenAI / Codex
   codex:
     type: openai
-    model: 5.3-codex
-    api_key: ${CODEX_API_KEY}
+    model: gpt-5.3-codex
+    api_key: ${OPENAI_API_KEY}
     max_tokens: 4000
     temperature: 0.2
     
+  # Anthropic / Claude
   claude-opus:
     type: anthropic
     model: claude-opus-4.6
@@ -20,6 +22,7 @@ agents:
     max_tokens: 8000
     temperature: 0.2
     
+  # Google / Gemini
   gemini:
     type: google
     model: gemini-2.5-pro
@@ -27,21 +30,34 @@ agents:
     max_tokens: 4000
     temperature: 0.2
     
-  gpt4:
-    type: openai
-    model: gpt-4.5
-    api_key: ${OPENAI_API_KEY}
-    max_tokens: 4000
-    temperature: 0.2
-    
+  # Moonshot / Kimi
   kimi:
-    type: openai  # Kimi 使用 OpenAI 兼容 API
+    type: openai
     model: kimi-k2.5
     api_key: ${KIMI_API_KEY}
     endpoint: https://api.moonshot.cn/v1
     max_tokens: 4000
     temperature: 0.2
     
+  # MiniMax
+  minimax:
+    type: openai
+    model: minimax-m2.5
+    api_key: ${MINIMAX_API_KEY}
+    endpoint: https://api.minimaxi.com/v1
+    max_tokens: 4000
+    temperature: 0.2
+    
+  # Zhipu / GLM
+  glm:
+    type: openai
+    model: glm-5
+    api_key: ${GLM_API_KEY}
+    endpoint: https://open.bigmodel.cn/api/paas/v4
+    max_tokens: 4000
+    temperature: 0.2
+    
+  # Local / OpenCode
   opencode:
     type: local
     model: opencode-7b
@@ -52,16 +68,20 @@ agents:
 strategies:
   fast_coding:
     primary: codex
-    fallback: gemini
+    fallback: minimax
     
   deep_refactor:
     primary: claude-opus
     review_by: codex
     
   parallel_implementation:
-    agents: [codex, claude-sonnet, gemini]
+    agents: [codex, claude-sonnet, minimax]
     selection: best_of_three
     
   code_review:
     agents: [claude-opus, codex]
     mode: consensus
+    
+  agent_swarm:
+    primary: kimi
+    swarm_size: 10

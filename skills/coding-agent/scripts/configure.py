@@ -14,8 +14,8 @@ DEFAULT_CONFIG = {
     "agents": {
         "codex": {
             "type": "openai",
-            "model": "5.3-codex",
-            "api_key": "${CODEX_API_KEY}",
+            "model": "gpt-5.3-codex",
+            "api_key": "${OPENAI_API_KEY}",
             "max_tokens": 4000,
             "temperature": 0.2
         },
@@ -40,18 +40,27 @@ DEFAULT_CONFIG = {
             "max_tokens": 4000,
             "temperature": 0.2
         },
-        "gpt4": {
-            "type": "openai",
-            "model": "gpt-4.5",
-            "api_key": "${OPENAI_API_KEY}",
-            "max_tokens": 4000,
-            "temperature": 0.2
-        },
         "kimi": {
             "type": "openai",
             "model": "kimi-k2.5",
             "api_key": "${KIMI_API_KEY}",
             "endpoint": "https://api.moonshot.cn/v1",
+            "max_tokens": 4000,
+            "temperature": 0.2
+        },
+        "minimax": {
+            "type": "openai",
+            "model": "minimax-m2.5",
+            "api_key": "${MINIMAX_API_KEY}",
+            "endpoint": "https://api.minimaxi.com/v1",
+            "max_tokens": 4000,
+            "temperature": 0.2
+        },
+        "glm": {
+            "type": "openai",
+            "model": "glm-5",
+            "api_key": "${GLM_API_KEY}",
+            "endpoint": "https://open.bigmodel.cn/api/paas/v4",
             "max_tokens": 4000,
             "temperature": 0.2
         },
@@ -66,15 +75,19 @@ DEFAULT_CONFIG = {
     "strategies": {
         "fast_coding": {
             "primary": "codex",
-            "fallback": "gemini"
+            "fallback": "minimax"
         },
         "deep_refactor": {
             "primary": "claude-opus",
             "review_by": "codex"
         },
         "parallel_implementation": {
-            "agents": ["codex", "claude-sonnet", "gemini"],
+            "agents": ["codex", "claude-sonnet", "minimax"],
             "selection": "best_of_three"
+        },
+        "agent_swarm": {
+            "primary": "kimi",
+            "swarm_size": 10
         }
     }
 }
@@ -95,9 +108,12 @@ def init_config(path: str = "./agents.yaml"):
     
     print(f"✅ 配置文件已创建: {path}")
     print("\n请设置以下环境变量:")
-    print("  export CODEX_API_KEY='your-codex-key'")
-    print("  export ANTHROPIC_API_KEY='your-anthropic-key'")
-    print("  export GEMINI_API_KEY='your-gemini-key'")
+    print("  export OPENAI_API_KEY='your-openai-key'      # For Codex")
+    print("  export ANTHROPIC_API_KEY='your-anthropic-key'   # For Claude")
+    print("  export GEMINI_API_KEY='your-gemini-key'      # For Gemini")
+    print("  export KIMI_API_KEY='your-kimi-key'        # For Kimi (Moonshot)")
+    print("  export MINIMAX_API_KEY='your-minimax-key'     # For MiniMax")
+    print("  export GLM_API_KEY='your-glm-key'         # For GLM (Zhipu)")
     print("  export OPENAI_API_KEY='your-openai-key'")
 
 
