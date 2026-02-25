@@ -187,6 +187,42 @@ class DongqiudiScraper(BaseScraper):
         return text.strip()
 
     def get_comments(self, post_id: str, *, limit: int = 50) -> list[Comment]:
-        """懂球帝评论需要单独爬取"""
-        logger.debug("Dongqiudi comments require separate API. post_id=%s", post_id)
-        return []
+        """获取懂球帝文章评论"""
+        # Remove topic_ prefix if present
+        clean_id = post_id.replace("topic_", "")
+        url = f"https://api.dongqiudi.com/v2/article/{clean_id}/comment"
+
+        try:
+            response = self._get(url, headers=self.DEFAULT_HEADERS)
+            data = response.json()
+            result = data.get("data", {})
+            comments_data = result.get("comment_list", [])
+
+            comments: list[Comment] = []
+            for c in comments_data[:limit]:
+                content = c.get("content", "")
+                author = c.get("user_name", "匿名")
+                likes = c.get("up_num", 0)
+                time_str = c.get("created_at", "")
+
+                # Parse time
+                try:
+                    posted_at = datetime.fromisoformat(time_str.replace("Z", "+00:00"))
+                except:
+                    posted_at = datetime.now()
+
+                comments.append(
+                    Comment(
+                        id=str(c.get("id", hash(content) % 10000000)),
+                        content=content,
+                        author=author,
+                        posted_at=posted_at,
+                        likes=likes,
+                    )
+                )
+
+            logger.info("Fetched %s comments for article %s", len(comments), clean_id)
+            return comments
+        except Exception as exc:
+            logger.warning("Failed to fetch comments for %s: %s", post_id, exc)
+            return []
