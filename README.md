@@ -18,6 +18,7 @@ Niuverse Skills is a modular skill library designed for AI agents (Claude, OpenC
 | [`robot-sim-expert`](./skills/robot-sim-expert/) | Expert-level robot simulation engineering skill for Isaac... | 🤖 Robotics |
 | [`python-architect`](./skills/python-architect/) | Expert Python software architect for modern, production-g... | 🐍 Python |
 | [`mkdocs-creator`](./skills/mkdocs-creator/) | Expert documentation site creator using MkDocs and Materi... | 🛠️ Tools |
+| [`paper-reading`](./skills/paper-reading/) | Academic paper reading and analysis expert. Specializes in: | 🛠️ Tools |
 | [`code-style-imitator`](./skills/code-style-imitator/) | AI-powered code style analyzer and imitator. Extracts cod... | ✨ Code Quality |
 | [`code-style-unifier`](./skills/code-style-unifier/) | Universal code style formatter and unifier. Transforms co... | ✨ Code Quality |
 
