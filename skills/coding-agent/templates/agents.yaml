@@ -1,29 +1,44 @@
 agents:
   codex:
     type: openai
-    model: codex-latest
+    model: 5.3-codex
     api_key: ${CODEX_API_KEY}
     max_tokens: 4000
     temperature: 0.2
     
-  claude:
+  claude-opus:
     type: anthropic
-    model: claude-sonnet-4-20250514
+    model: claude-opus-4.6
+    api_key: ${ANTHROPIC_API_KEY}
+    max_tokens: 8000
+    temperature: 0.2
+    
+  claude-sonnet:
+    type: anthropic
+    model: claude-sonnet-4.6
     api_key: ${ANTHROPIC_API_KEY}
     max_tokens: 8000
     temperature: 0.2
     
   gemini:
     type: google
-    model: gemini-2.0-flash
+    model: gemini-2.5-pro
     api_key: ${GEMINI_API_KEY}
     max_tokens: 4000
     temperature: 0.2
     
   gpt4:
     type: openai
-    model: gpt-4o
+    model: gpt-4.5
     api_key: ${OPENAI_API_KEY}
+    max_tokens: 4000
+    temperature: 0.2
+    
+  kimi:
+    type: openai  # Kimi 使用 OpenAI 兼容 API
+    model: kimi-k2.5
+    api_key: ${KIMI_API_KEY}
+    endpoint: https://api.moonshot.cn/v1
     max_tokens: 4000
     temperature: 0.2
     
@@ -40,13 +55,13 @@ strategies:
     fallback: gemini
     
   deep_refactor:
-    primary: claude
+    primary: claude-opus
     review_by: codex
     
   parallel_implementation:
-    agents: [codex, claude, gemini]
+    agents: [codex, claude-sonnet, gemini]
     selection: best_of_three
     
   code_review:
-    agents: [claude, codex]
+    agents: [claude-opus, codex]
     mode: consensus

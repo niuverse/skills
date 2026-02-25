@@ -33,10 +33,15 @@ AGENT_CAPABILITIES = {
         debugging=4, test_generation=5, documentation=3,
         long_context=3, api_design=5
     ),
-    "claude": AgentCapability(
+    "claude-opus": AgentCapability(
         architecture_design=5, fast_coding=5, code_refactor=5,
         debugging=5, test_generation=5, documentation=5,
         long_context=5, api_design=5
+    ),
+    "claude-sonnet": AgentCapability(
+        architecture_design=4, fast_coding=5, code_refactor=5,
+        debugging=5, test_generation=5, documentation=4,
+        long_context=4, api_design=5
     ),
     "gemini": AgentCapability(
         architecture_design=5, fast_coding=4, code_refactor=4,

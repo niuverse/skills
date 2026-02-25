@@ -5,8 +5,6 @@ description: |
   AI coding agents like Kimi, Codex, Claude Code, Gemini, OpenCode, etc.
   
   Use cases:
-  - Kimi orchestrates Codex + Claude Code for development
-  - Codex manages multiple Claude Code instances
   - Multi-agent parallel coding with task distribution
   - Agent selection based on task characteristics
   - Cross-model code review and validation
@@ -43,72 +41,30 @@ description: |
 
 ## 📖 使用模式
 
-### 模式 1: Kimi 主控 + Codex/Claude 执行
+### 模式 1: 单代理执行
 
-```
-┌─────────┐     ┌─────────────┐     ┌─────────────┐
-│  User   │────▶│    Kimi     │────▶│  Architect  │
-│ Request │     │  (Orchestrator)   │  │  Design     │
-└─────────┘     └──────┬──────┘     └─────────────┘
-                       │
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-  ┌─────────┐    ┌─────────┐    ┌─────────┐
-  │  Codex  │    │ Claude  │    │  Gemini │
-  │ (Fast)  │    │ (Deep)  │    │(Context)│
-  └────┬────┘    └────┬────┘    └────┬────┘
-       │               │               │
-       └───────────────┼───────────────┘
-                       ▼
-              ┌─────────────────┐
-              │  Result Merge   │
-              └─────────────────┘
+```bash
+python scripts/orchestrate.py --mode single --agent codex --task "实现快速排序"
 ```
 
-### 模式 2: Codex 主控 + 多 Claude 并行
+### 模式 2: 多代理并行
 
-```
-┌─────────┐     ┌─────────────┐
-│  Task   │────▶│    Codex    │
-│         │     │ (Coordinator)│
-└─────────┘     └──────┬──────┘
-                       │
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-  ┌─────────┐    ┌─────────┐    ┌─────────┐
-  │ Claude  │    │ Claude  │    │ Claude  │
-  │  #1     │    │  #2     │    │  #3     │
-  │(Frontend)│   │(Backend)│    │(Tests)  │
-  └────┬────┘    └────┬────┘    └────┬────┘
-       │               │               │
-       └───────────────┼───────────────┘
-                       ▼
-              ┌─────────────────┐
-              │  Integration    │
-              └─────────────────┘
+```bash
+python scripts/orchestrate.py --mode parallel --agents codex,claude --task "实现 REST API"
 ```
 
-### 模式 3: 代理竞争 (Agent Arena)
+### 模式 3: 代理竞技场 (Agent Arena)
 
+多个代理执行同一任务，自动选择最佳结果。
+
+```bash
+python scripts/orchestrate.py --mode arena --task "优化算法" --agents codex,claude,gemini
 ```
-┌─────────┐     ┌─────────────┐
-│  Task   │────▶│  All Agents │
-│         │     │  (Parallel) │
-└─────────┘     └──────┬──────┘
-                       │
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-  ┌─────────┐    ┌─────────┐    ┌─────────┐
-  │  Codex  │    │ Claude  │    │  Gemini │
-  │ Result  │    │ Result  │    │ Result  │
-  └────┬────┘    └────┬────┘    └────┬────┘
-       │               │               │
-       └───────────────┼───────────────┘
-                       ▼
-              ┌─────────────────┐
-              │  Best Result    │
-              │  Selection      │
-              └─────────────────┘
+
+### 模式 4: 代码审查
+
+```bash
+python scripts/orchestrate.py --mode review --file code.py --agents codex,claude
 ```
 
 ## 🛠️ 快速开始
@@ -120,20 +76,20 @@ python scripts/verify_env.py
 
 ### 2. 配置代理
 ```bash
-python scripts/configure.py --add codex --api-key $CODEX_API_KEY
-python scripts/configure.py --add claude --api-key $ANTHROPIC_API_KEY
-python scripts/configure.py --add gemini --api-key $GEMINI_API_KEY
+python scripts/configure.py --init
+
+# 设置环境变量
+export CODEX_API_KEY="your-key"
+export ANTHROPIC_API_KEY="your-key"
+export GEMINI_API_KEY="your-key"
 ```
 
-### 3. 运行多代理任务
+### 3. 运行任务
 ```bash
-# 模式 1: Kimi 主控
-python scripts/orchestrate.py --mode kimi-led --task "实现一个 REST API" --agents codex,claude
+# 单代理
+python scripts/orchestrate.py --mode single --agent codex --task "实现快速排序"
 
-# 模式 2: Codex 主控 + 并行 Claude
-python scripts/orchestrate.py --mode codex-led --task "重构代码库" --parallel 3
-
-# 模式 3: 代理竞争
+# 多代理竞技场
 python scripts/orchestrate.py --mode arena --task "优化算法" --agents codex,claude,gemini
 ```
 
@@ -142,41 +98,37 @@ python scripts/orchestrate.py --mode arena --task "优化算法" --agents codex,
 ### 单代理调用
 
 ```python
-from scripts.agent_caller import AgentCaller
+from scripts.orchestrate import AgentCaller, AgentConfig
 
-# 调用 Codex
-codex = AgentCaller("codex", api_key="...")
-result = codex.code("实现一个快速排序算法")
+# 配置代理
+config = AgentConfig(
+    name="codex",
+    type="openai",
+    model="5.3-codex",
+    api_key="your-key"
+)
 
-# 调用 Claude Code
-claude = AgentCaller("claude", api_key="...")
-result = claude.code("重构这个函数", context=code_context)
+# 调用代理
+agent = AgentCaller(config)
+result = agent.code("实现一个快速排序算法")
 ```
 
 ### 多代理协调
 
 ```python
-from scripts.orchestrator import MultiAgentOrchestrator
+from scripts.orchestrate import MultiAgentOrchestrator
 
 # 创建协调器
-orch = MultiAgentOrchestrator()
+orch = MultiAgentOrchestrator("./agents.yaml")
 
-# 注册代理
-orch.register("codex", codex_config)
-orch.register("claude", claude_config)
-orch.register("gemini", gemini_config)
+# 并行执行多个任务
+tasks = [
+    {"agent": "codex", "task": "实现 JWT 生成"},
+    {"agent": "claude", "task": "设计数据库模型"},
+    {"agent": "gemini", "task": "编写 API 文档"}
+]
 
-# 分配任务
-task = {
-    "description": "实现用户认证系统",
-    "subtasks": [
-        {"agent": "codex", "task": "实现 JWT 生成和验证"},
-        {"agent": "claude", "task": "设计数据库模型"},
-        {"agent": "gemini", "task": "编写 API 文档"}
-    ]
-}
-
-results = orch.execute_parallel(task)
+results = orch.execute_parallel(tasks)
 ```
 
 ### 智能代理选择
@@ -192,7 +144,7 @@ agent = selector.select_for_task(
     criteria=["speed", "frontend_expertise"]
 )
 
-print(f"选择代理: {agent.name}")  # 可能输出: claude
+print(f"选择代理: {agent}")
 ```
 
 ## 🔧 配置示例
@@ -203,26 +155,34 @@ print(f"选择代理: {agent.name}")  # 可能输出: claude
 agents:
   codex:
     type: openai
-    model: codex-latest
+    model: 5.3-codex
     api_key: ${CODEX_API_KEY}
     max_tokens: 4000
     temperature: 0.2
     
-  claude:
+  claude-opus:
     type: anthropic
-    model: claude-sonnet-4-20250514
+    model: claude-opus-4.6
+    api_key: ${ANTHROPIC_API_KEY}
+    max_tokens: 8000
+    
+  claude-sonnet:
+    type: anthropic
+    model: claude-sonnet-4.6
     api_key: ${ANTHROPIC_API_KEY}
     max_tokens: 8000
     
   gemini:
     type: google
-    model: gemini-2.0-flash
+    model: gemini-2.5-pro
     api_key: ${GEMINI_API_KEY}
+    max_tokens: 4000
     
-  opencode:
-    type: local
-    endpoint: http://localhost:8080/v1/completions
-    model: opencode-7b
+  gpt4:
+    type: openai
+    model: gpt-4.5
+    api_key: ${OPENAI_API_KEY}
+    max_tokens: 4000
 
 strategies:
   fast_coding:
@@ -230,73 +190,18 @@ strategies:
     fallback: gemini
     
   deep_refactor:
-    primary: claude
+    primary: claude-opus
     review_by: codex
     
   parallel_implementation:
-    agents: [codex, claude, gemini]
+    agents: [codex, claude-sonnet, gemini]
     selection: best_of_three
-```
-
-## 🎭 典型工作流
-
-### 工作流 1: 新功能开发
-
-```bash
-# 1. Kimi 设计架构
-python scripts/orchestrate.py \
-  --mode kimi-led \
-  --task "设计一个实时聊天系统架构" \
-  --output architecture.md
-
-# 2. Codex 快速实现核心功能
-python scripts/orchestrate.py \
-  --mode single \
-  --agent codex \
-  --task "根据架构实现 WebSocket 服务器" \
-  --context architecture.md
-
-# 3. Claude 深度优化
-python scripts/orchestrate.py \
-  --mode single \
-  --agent claude \
-  --task "优化代码性能和可读性" \
-  --context websocket_server.py
-
-# 4. 多代理代码审查
-python scripts/orchestrate.py \
-  --mode review \
-  --agents codex,claude,gemini \
-  --file websocket_server.py
-```
-
-### 工作流 2: Bug 修复
-
-```bash
-# 并行诊断
-python scripts/orchestrate.py \
-  --mode arena \
-  --task "诊断并修复这个 bug" \
-  --context error_logs.txt \
-  --agents codex,claude \
-  --selection consensus
-```
-
-### 工作流 3: 代码迁移
-
-```bash
-# 多代理并行迁移不同模块
-python scripts/orchestrate.py \
-  --mode codex-led \
-  --task "将 Python2 代码迁移到 Python3" \
-  --parallel 4 \
-  --split-by module
 ```
 
 ## 📊 代理能力矩阵
 
-| 任务类型 | Kimi | Codex | Claude | Gemini | OpenCode |
-|----------|------|-------|--------|--------|----------|
+| 任务类型 | Kimi | Codex | Claude Opus | Gemini | OpenCode |
+|----------|------|-------|-------------|--------|----------|
 | 架构设计 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
 | 快速编码 | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
 | 代码重构 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
@@ -317,9 +222,8 @@ python scripts/orchestrate.py \
 
 ## 📚 参考资料
 
-- [resources.md](references/resources.md) - 各代理 API 文档
-- [best-practices.md](references/best-practices.md) - 多代理协作最佳实践
-- [examples/](templates/) - 示例配置和脚本
+- [resources.md](references/resources.md) - 各代理 API 文档和最新模型信息
+- [templates/](templates/) - 示例配置和脚本
 
 ---
 
