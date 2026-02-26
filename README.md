@@ -19,6 +19,7 @@ Niuverse Skills is a modular skill library designed for AI agents (Claude, OpenC
 | [`python-architect`](./skills/python-architect/) | Expert Python software architect for modern, production-g... | 🐍 Python |
 | [`web-searcher`](./skills/web-searcher/) | Comprehensive web search skill for OpenClaw. Aggregates r... | 🌐 Web |
 | [`coding-agent`](./skills/coding-agent/) | Multi-model coding agent orchestration skill. Enables coo... | 🛠️ Tools |
+| [`football-scraper`](./skills/football-scraper/) | Chinese football platform scrapers for Hupu, Dongqiudi, a... | 🛠️ Tools |
 | [`mkdocs-creator`](./skills/mkdocs-creator/) | Expert documentation site creator using MkDocs and Materi... | 🛠️ Tools |
 | [`paper-reading`](./skills/paper-reading/) | Academic paper reading and analysis expert. Specializes in: | 🛠️ Tools |
 | [`code-style-imitator`](./skills/code-style-imitator/) | AI-powered code style analyzer and imitator. Extracts cod... | ✨ Code Quality |
