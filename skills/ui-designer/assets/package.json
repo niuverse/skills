@@ -1,0 +1,9 @@
+{
+  "name": "ui-designer",
+  "version": "1.0.0",
+  "description": "专业的 UI/UX 设计助手",
+  "scripts": {
+    "generate-palette": "python3 scripts/generate-palette.py",
+    "check-contrast": "python3 scripts/check-contrast.py"
+  }
+}
