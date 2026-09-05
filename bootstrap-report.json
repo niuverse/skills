@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-09-05T06:25:42.672868",
+  "skills": [
+    {
+      "name": "paper-reading",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.165739"
+    },
+    {
+      "name": "coding-agent",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.164157"
+    },
+    {
+      "name": "web-searcher",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.167582"
+    },
+    {
+      "name": "ui-designer",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.167057"
+    },
+    {
+      "name": "mkdocs-creator",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.165227"
+    },
+    {
+      "name": "football-scraper",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.164522"
+    },
+    {
+      "name": "code-style-imitator",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.163262"
+    },
+    {
+      "name": "code-style-unifier",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.163696"
+    },
+    {
+      "name": "python-architect",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.166199"
+    },
+    {
+      "name": "robot-sim-expert",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.166540"
+    },
+    {
+      "name": "code-simplifier",
+      "pending_gaps": 0,
+      "last_modified": "2026-09-05T06:25:39.162994"
+    }
+  ]
+}
